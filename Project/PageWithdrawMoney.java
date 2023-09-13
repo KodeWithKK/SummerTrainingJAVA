@@ -1,26 +1,32 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
 
-class PageWithdrawMoney {
-    JLabel l1, l2, l3;
-    JFrame frm;
+class PageWithdrawMoney implements ActionListener {
+    JLabel l1, l2, l3, l4;
+    JFrame fr;
     JTextField t1;
     JButton b1, b2;
+    Statement st;
+    String userName;
 
-    PageWithdrawMoney() {
-        frm = new JFrame("Withdraw Money");
+    PageWithdrawMoney(JFrame fr, Statement st, String userName) {
+        this.fr = fr;
+        this.st = st;
+        this.userName = userName;
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
         l3 = new JLabel("Enter Amount: ");
+        l4 = new JLabel("");
         t1 = new JTextField("");
         b1 = new JButton("Withdraw Money");
         b2 = new JButton("Go Back");
     }
 
-    void layoutMgr() {
-        frm.setLayout(null);
-        frm.setSize(500, 400);
+    void showLayout() {
+        fr.setLayout(null);
+        fr.setSize(500, 400);
         l1.setBounds(225, 30, 200, 50);
         l2.setBounds(225, 50, 200, 50);
 
@@ -30,18 +36,72 @@ class PageWithdrawMoney {
         b1.setBounds(80, 210, 150, 40);
         b2.setBounds(260, 210, 150, 40);
 
-        frm.add(l1);
-        frm.add(l2);
-        frm.add(l3);
-        frm.add(t1);
-        frm.add(b1);
-        frm.add(b2);
+        fr.add(l1);
+        fr.add(l2);
+        fr.add(l3);
+        fr.add(t1);
+        fr.add(b1);
+        fr.add(b2);
 
-        frm.setVisible(true);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+
+        fr.setVisible(true);
+    }
+
+    void hideLayout() {
+        fr.remove(l1);
+        fr.remove(l2);
+        fr.remove(l3);
+        fr.remove(l4);
+        fr.remove(t1);
+        fr.remove(b1);
+        fr.remove(b2);
+    }
+
+    void showMessage() {
+        String amount = t1.getText();
+        l4.setText("₹" + amount + " is Succesfully Withdrawn from your Account.");
+        l4.setForeground(Color.red);
+        fr.add(l4);
+
+        l4.setBounds(80, 190, 400, 30);
+        b1.setBounds(80, 250, 150, 40);
+        b2.setBounds(260, 250, 150, 40);
+
+        fr.setSize(500, 470);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == b1) {
+
+            try {
+                ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                rs.next();
+                int balance = Integer.parseInt(rs.getString("balance"));
+                int amtDeposited = Integer.parseInt(t1.getText());
+                String userName = rs.getString("username");
+
+                showMessage();
+
+                st.executeUpdate("update bank set balance = '" + (balance - amtDeposited) + "' where username = '" + userName + "'");
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
+
+        }
+        else if (ae.getSource() == b2) {
+            hideLayout();
+            ManageAccount ma = new ManageAccount(fr, st, userName);
+            ma.showLayout();
+        }
     }
 
     public static void main(String[] args){
-        PageWithdrawMoney dm = new PageWithdrawMoney();
-        dm.layoutMgr();
+        JFrame fr = new JFrame("Withdraw Money");
+        Statement st = null;
+        PageWithdrawMoney dm = new PageWithdrawMoney(fr, st , "");
+        dm.showLayout();
     }
 }

@@ -1,26 +1,32 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
 
-class ManageAccount {
+class ManageAccount implements ActionListener {
+    JFrame fr;
     JLabel l1, l2;
-    JFrame frm;
     JButton b1, b2, b3, b4, b5;
+    String userName;
+    Statement st;
 
-    ManageAccount() {
-        frm = new JFrame("Manage Account");
+    ManageAccount (JFrame fr, Statement st, String userName) {
+        this.fr = fr;
+        this.st = st;
+        this.userName = userName;
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
         b1 = new JButton("Check Profile");
         b2 = new JButton("Deposit Money");
         b3 = new JButton("Withdraw Money");
         b4 = new JButton("Check Balance");
-        b5 = new JButton("View Transactions");
+        b5 = new JButton("Sign Out");
     }
 
-    void layoutMgr() {
-        frm.setLayout(null);
-        frm.setSize(400, 600);
+    void showLayout() {
+        fr.setTitle("Manage Account");
+        fr.setLayout(null);
+        fr.setSize(400, 600);
         l1.setBounds(170, 30, 200, 50);
         l2.setBounds(170, 50, 200, 50);
 
@@ -30,19 +36,65 @@ class ManageAccount {
         b4.setBounds(100, 330, 200, 50);
         b5.setBounds(100, 400, 200, 50);
 
-        frm.add(l1);
-        frm.add(l2);
-        frm.add(b1);
-        frm.add(b2);
-        frm.add(b3);
-        frm.add(b4);
-        frm.add(b5);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        b4.addActionListener(this);
+        b5.addActionListener(this);
 
-        frm.setVisible(true);
+        fr.add(l1);
+        fr.add(l2);
+        fr.add(b1);
+        fr.add(b2);
+        fr.add(b3);
+        fr.add(b4);
+        fr.add(b5);
+
+        fr.setVisible(true);
     }
 
-    public static void main(String[] args){
-        ManageAccount ma = new ManageAccount();
-        ma.layoutMgr();
+    void hideLayout() {
+        fr.remove(l1);
+        fr.remove(l2);
+        fr.remove(b1);
+        fr.remove(b2);
+        fr.remove(b3);
+        fr.remove(b4);
+        fr.remove(b5);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == b1) {
+            hideLayout();
+            PageCheckProfile cp = new PageCheckProfile(fr, st, userName);
+            cp.showLayout();
+        }
+        else if (ae.getSource() == b2) {
+            hideLayout();
+            PageDepositMoney dm = new PageDepositMoney(fr, st, userName);
+            dm.showLayout();
+        }
+        else if (ae.getSource() == b3) {
+            hideLayout();
+            PageWithdrawMoney wm = new PageWithdrawMoney(fr, st, userName);
+            wm.showLayout();
+        }
+        else if (ae.getSource() == b4) {
+            hideLayout();
+            PageCheckBalance cb = new PageCheckBalance(fr, st, userName);
+            cb.showLayout();
+        }
+        else if (ae.getSource() == b5) {
+            hideLayout();
+            PageLogin lg = new PageLogin(fr, st) ;
+            lg.showLayout();
+        }
+    }
+
+    public static void main (String[] args){
+        JFrame fr = new JFrame();
+        Statement st = null;
+        ManageAccount ma = new ManageAccount(fr, st, "");
+        ma.showLayout();
     }
 }

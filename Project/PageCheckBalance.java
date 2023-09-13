@@ -1,38 +1,74 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
 
-class PageCheckBalance {
+class PageCheckBalance implements ActionListener {
     JLabel l1, l2, l3;
-    JFrame frm;
+    JFrame fr;
     JButton b1;
+    Statement st;
+    String userName;
 
-    PageCheckBalance() {
-        frm = new JFrame("Check Balance");
+    PageCheckBalance(JFrame fr, Statement st, String userName) {
+        this.fr = fr;
+        this.st = st;
+        this.userName = userName;
+
+        String balance = "0";
+        try {
+            ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+            rs.next();
+            balance = rs.getString("balance");
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
-        l3 = new JLabel("Your Balance is ₹9,130");
+        l3 = new JLabel("Your Balance is ₹" + balance);
         b1 = new JButton("Go Back");
     }
 
-    void layoutMgr() {
-        frm.setLayout(null);
-        frm.setSize(400, 400);
+    void showLayout() {
+        fr.setLayout(null);
+        fr.setSize(400, 400);
         l1.setBounds(175, 30, 200, 50);
         l2.setBounds(175, 50, 200, 50);
         l3.setBounds(135, 140, 400, 40);
         b1.setBounds(125, 210, 150, 40);
 
-        frm.add(l1);
-        frm.add(l2);
-        frm.add(l3);
-        frm.add(b1);
+        fr.add(l1);
+        fr.add(l2);
+        fr.add(l3);
+        fr.add(b1);
 
-        frm.setVisible(true);
+        b1.addActionListener(this);
+
+        fr.setVisible(true);
+    }
+
+    void hideLayout() {
+        fr.remove(l1);
+        fr.remove(l2);
+        fr.remove(l3);
+        fr.remove(b1);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == b1) {
+            hideLayout();
+            ManageAccount ma = new ManageAccount(fr, st, userName);
+            ma.showLayout();
+        }
     }
 
     public static void main(String[] args){
-        PageCheckBalance cb = new PageCheckBalance();
-        cb.layoutMgr();
+        JFrame fr = new JFrame("Check Balance");
+        Statement st = null;
+
+        PageCheckBalance cb = new PageCheckBalance(fr, st, "");
+        cb.showLayout();
     }
 }
