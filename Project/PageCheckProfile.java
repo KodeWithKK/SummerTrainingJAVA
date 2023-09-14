@@ -160,7 +160,7 @@ class PageCheckProfile implements ActionListener {
             ma.showLayout();
         }
         else if (ae.getSource() == b2) {
-            String newName = t1.getText();
+            String newName = t1.getText().toLowerCase();
             String pass = t2.getText();
             String dob = t3.getText();
             String gender = t4.getText();
@@ -189,6 +189,8 @@ class PageCheckProfile implements ActionListener {
                     st.executeUpdate("update bank set phoneno = '"+phoneno+"' where username = '"+userName+"'");
                     st.executeUpdate("update bank set email = '"+emailid+"' where username = '"+userName+"'");
                     st.executeUpdate("update bank set username = '"+newName+"' where username = '"+userName+"'");
+
+                    userName = newName;
                 }
                 catch (Exception e) {
                     System.out.println(e);

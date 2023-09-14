@@ -87,28 +87,26 @@ public class PageLogin implements ActionListener  {
         }
         else if (ae.getSource() == b2) {
 
-            String userName = t1.getText();
+            String userName = t1.getText().toLowerCase();
             String pass = t2.getText();
 
             if (userName.length() > 0) {
                 try {
                     ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
-                    rs.next();
-                    boolean passIsCorrect = false;
-                    
-                    if (rs.getString("password").equals(pass)) {
-                        passIsCorrect = true;
+                    if (rs.next()) {
+                        if (rs.getString("password").equals(pass)) {
+                            hideLayout();
+                            PageManageAccount ma = new PageManageAccount(fr, st, userName);
+                            ma.showLayout();
+                        } 
+                        else {
+                            showMessage();
+                        }
                     }
-                    
-                    if (passIsCorrect) {
-                        hideLayout();
-                        PageManageAccount ma = new PageManageAccount(fr, st, userName);
-                        ma.showLayout();
-                    } 
                     else {
                         showMessage();
                     }
-
+                    
                 }
                 catch (Exception e) {
                     System.out.println(e);

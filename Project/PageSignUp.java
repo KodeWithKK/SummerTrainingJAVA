@@ -152,7 +152,7 @@ class PageSignUp implements ActionListener {
             ln.showLayout();
         }
         else if (ae.getSource() == b2) {
-            String name = t1.getText();
+            String name = t1.getText().toLowerCase();
             String pass = t2.getText();
             String dob = t3.getText();
             String gender = t4.getText();
@@ -168,14 +168,21 @@ class PageSignUp implements ActionListener {
                 showMessage(errorMssg, Color.red);
             }
             else {
-                showMessage(successMssg, Color.green);
-
+                
                 try {
-                    st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
+                    ResultSet rs = st.executeQuery("select * from bank where username = '" + name + "'");
+                    if (rs.next()) {
+                        showMessage("User Already Exists.", Color.red);
+                    }
+                    else {
+                        st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
+                        showMessage(successMssg, Color.green);
+                    }
                 }
                 catch (Exception e) {
                     System.out.println(e);
                 }
+               
             }
 
         }
