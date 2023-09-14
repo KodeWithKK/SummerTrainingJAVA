@@ -51,10 +51,10 @@ class PageDepositMoney implements ActionListener  {
         fr.setVisible(true);
     }
 
-    void showMessage() {
+    void showMessage(String mssg, Color color) {
         String amount = t1.getText();
-        l4.setText("₹" + amount + " is Succesfully Deposited to your Account.");
-        l4.setForeground(Color.green);
+        l4.setText(mssg);
+        l4.setForeground(color);
         fr.add(l4);
 
         l4.setBounds(80, 190, 400, 30);
@@ -80,32 +80,32 @@ class PageDepositMoney implements ActionListener  {
             try {
                 ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
                 rs.next();
-                int balance = Integer.parseInt(rs.getString("balance"));
-                int amtDeposited = Integer.parseInt(t1.getText());
-                String userName = rs.getString("username");
+                int currBalance = Integer.parseInt(rs.getString("balance"));
+                int depositAmt = Integer.parseInt(t1.getText());
 
-                showMessage();
+                if (rs.getString("balance").length() > 20) {
+                    showMessage("Sorry, but our bank can't hold that much amount.", Color.red);
+                }
+                else {
+                    showMessage("₹" + depositAmt + " is Succesfully Deposited to your Account.", Color.green);
+                    
+                    rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    rs.next();
+                    String userName = rs.getString("username");
 
-                st.executeUpdate("update bank set balance = '" + (balance + amtDeposited) + "' where username = '" + userName + "'");
+                    st.executeUpdate("update bank set balance = '" + (currBalance + depositAmt) + "' where username = '" + userName + "'");
+                    
+                }
             }
             catch (Exception e) {
                 System.out.println(e);
             }
             
-
         }
         else if (ae.getSource() == b2) {
             hideLayout();
-            ManageAccount ma = new ManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, userName);
             ma.showLayout();
         }
-    }
-
-    public static void main(String[] args){
-        Statement st = null;
-        JFrame fr = new JFrame("Deposit Money");
-
-        PageDepositMoney dm = new PageDepositMoney(fr, st, "");
-        dm.showLayout();
     }
 }

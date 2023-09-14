@@ -110,9 +110,9 @@ class PageSignUp implements ActionListener {
         fr.setVisible(true);
     }
 
-    void showMessage() {
-        l11.setText("Account Updated Successfully");
-        l11.setForeground(Color.green);
+    void showMessage(String mssg, Color color) {
+        l11.setText(mssg);
+        l11.setForeground(color);
         l11.setBounds(350,320,240,50);
         b1.setBounds(150,380,240,50);
         b2.setBounds(480,380,240,50);
@@ -148,7 +148,6 @@ class PageSignUp implements ActionListener {
     public void actionPerformed (ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            Statement st = null;
             PageLogin ln = new PageLogin(fr, st);
             ln.showLayout();
         }
@@ -162,25 +161,23 @@ class PageSignUp implements ActionListener {
             String phoneno = t7.getText();
             String emailid = t8.getText();
 
-            showMessage();
+            String successMssg = "Account Created Successfully";
+            String errorMssg = "Given Input Length too High";
 
-            try {
-                
-                st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
+            if (name.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
+                showMessage(errorMssg, Color.red);
             }
-            catch (Exception e) {
-                System.out.println(e);
-            }
+            else {
+                showMessage(successMssg, Color.green);
 
+                try {
+                    st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
 
         }
-    }
-
-    public static void main(String args[]){
-        JFrame fr = new JFrame("Hello");
-        Statement st = null;
-
-        PageSignUp su = new PageSignUp(fr, st);
-        su.showLayout();
     }
 }

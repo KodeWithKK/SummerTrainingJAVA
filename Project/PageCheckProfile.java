@@ -119,9 +119,9 @@ class PageCheckProfile implements ActionListener {
         fr.setVisible(true);
     }
 
-    void showMessage() {
-        l11.setText("Records Updated Successfully");
-        l11.setForeground(Color.green);
+    void showMessage(String mssg, Color color) {
+        l11.setText(mssg);
+        l11.setForeground(color);
         l11.setBounds(350,320,240,50);
         b1.setBounds(150,380,240,50);
         b2.setBounds(480,380,240,50);
@@ -156,7 +156,7 @@ class PageCheckProfile implements ActionListener {
     public void actionPerformed (ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            ManageAccount ma = new ManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, userName);
             ma.showLayout();
         }
         else if (ae.getSource() == b2) {
@@ -169,30 +169,33 @@ class PageCheckProfile implements ActionListener {
             String phoneno = t7.getText();
             String emailid = t8.getText();
 
-            try {
-                showMessage();
-                ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
-                rs.next();
-                st.executeUpdate("update bank set password = '"+pass+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set dob = '"+dob+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set gender = '"+gender+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set address = '"+address+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set religion = '"+religion+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set phoneno = '"+phoneno+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set email = '"+emailid+"' where username = '"+userName+"'");
-                st.executeUpdate("update bank set username = '"+newName+"' where username = '"+userName+"'");
+            String successMssg = "Account Updated Successfully";
+            String errorMssg = "Given Input Length too High";
+
+            if (newName.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
+                showMessage(errorMssg, Color.red);
             }
-            catch (Exception e) {
-                System.out.println(e);
+            else {
+                showMessage(successMssg, Color.green);
+
+                try {
+                    ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    rs.next();
+                    st.executeUpdate("update bank set password = '"+pass+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set dob = '"+dob+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set gender = '"+gender+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set address = '"+address+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set religion = '"+religion+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set phoneno = '"+phoneno+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set email = '"+emailid+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set username = '"+newName+"' where username = '"+userName+"'");
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }
             }
+
         }
     }
 
-    public static void main(String args[]){
-        JFrame fr = new JFrame("Hello");
-        Statement st = null;
-
-        PageCheckProfile cp = new PageCheckProfile(fr, st, "");
-        cp.showLayout();
-    }
 }

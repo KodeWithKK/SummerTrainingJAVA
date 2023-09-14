@@ -59,10 +59,10 @@ class PageWithdrawMoney implements ActionListener {
         fr.remove(b2);
     }
 
-    void showMessage() {
+    void showMessage(String mssg, Color color) {
         String amount = t1.getText();
-        l4.setText("₹" + amount + " is Succesfully Withdrawn from your Account.");
-        l4.setForeground(Color.red);
+        l4.setText(mssg);
+        l4.setForeground(color);
         fr.add(l4);
 
         l4.setBounds(80, 190, 400, 30);
@@ -78,13 +78,22 @@ class PageWithdrawMoney implements ActionListener {
             try {
                 ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
                 rs.next();
-                int balance = Integer.parseInt(rs.getString("balance"));
-                int amtDeposited = Integer.parseInt(t1.getText());
-                String userName = rs.getString("username");
+                int currBalance = Integer.parseInt(rs.getString("balance"));
+                int withdrawAmt = Integer.parseInt(t1.getText());
 
-                showMessage();
+                if (withdrawAmt > currBalance) {
+                    showMessage("Your Account doesn't have sufficent balance to be Withdrawn.", Color.red);
+                }
+                else {
+                    showMessage("₹" + withdrawAmt + " is Succesfully Withdrawn from your Account.", Color.green);
+                    
+                    rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    rs.next();
+                    String userName = rs.getString("username");
 
-                st.executeUpdate("update bank set balance = '" + (balance - amtDeposited) + "' where username = '" + userName + "'");
+                    st.executeUpdate("update bank set balance = '" + (currBalance - withdrawAmt) + "' where username = '" + userName + "'");
+                    
+                }
             }
             catch (Exception e) {
                 System.out.println(e);
@@ -93,15 +102,8 @@ class PageWithdrawMoney implements ActionListener {
         }
         else if (ae.getSource() == b2) {
             hideLayout();
-            ManageAccount ma = new ManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, userName);
             ma.showLayout();
         }
-    }
-
-    public static void main(String[] args){
-        JFrame fr = new JFrame("Withdraw Money");
-        Statement st = null;
-        PageWithdrawMoney dm = new PageWithdrawMoney(fr, st , "");
-        dm.showLayout();
     }
 }

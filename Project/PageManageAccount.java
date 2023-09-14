@@ -3,14 +3,14 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
 
-class ManageAccount implements ActionListener {
+class PageManageAccount implements ActionListener {
     JFrame fr;
     JLabel l1, l2;
     JButton b1, b2, b3, b4, b5;
     String userName;
     Statement st;
 
-    ManageAccount (JFrame fr, Statement st, String userName) {
+    PageManageAccount (JFrame fr, Statement st, String userName) {
         this.fr = fr;
         this.st = st;
         this.userName = userName;
@@ -89,12 +89,5 @@ class ManageAccount implements ActionListener {
             PageLogin lg = new PageLogin(fr, st) ;
             lg.showLayout();
         }
-    }
-
-    public static void main (String[] args){
-        JFrame fr = new JFrame();
-        Statement st = null;
-        ManageAccount ma = new ManageAccount(fr, st, "");
-        ma.showLayout();
     }
 }

@@ -59,16 +59,8 @@ class PageCheckBalance implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            ManageAccount ma = new ManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, userName);
             ma.showLayout();
         }
-    }
-
-    public static void main(String[] args){
-        JFrame fr = new JFrame("Check Balance");
-        Statement st = null;
-
-        PageCheckBalance cb = new PageCheckBalance(fr, st, "");
-        cb.showLayout();
     }
 }

@@ -17,6 +17,7 @@ public class PageLogin implements ActionListener  {
         l2 = new JLabel("Prayagraj");
         l3 = new JLabel("Username: ");
         l4 = new JLabel("Password: ");
+        l5 = new JLabel("");
         t1 = new JTextField("");
         t2 = new JTextField("");
         b1 = new JButton("New User?");
@@ -54,11 +55,24 @@ public class PageLogin implements ActionListener  {
         fr.setVisible(true);
     }
 
+    void showMessage() {
+        l5.setText("Incorrect username or password");
+        l5.setForeground(Color.red);
+        fr.add(l5);
+
+        l5.setBounds(150, 280, 340, 40);
+        b1.setBounds(80, 340, 150, 40);
+        b2.setBounds(260, 340, 150, 40);
+
+        fr.setSize(500, 550);
+    }
+
     void hideLayout() {
         fr.remove(l1);
         fr.remove(l2);
         fr.remove(l3);
         fr.remove(l4);
+        fr.remove(l5);
         fr.remove(t1);
         fr.remove(t2);
         fr.remove(b1);
@@ -76,34 +90,32 @@ public class PageLogin implements ActionListener  {
             String userName = t1.getText();
             String pass = t2.getText();
 
-            try {
-                ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
-                rs.next();
-                boolean passIsCorrect = false;
-                
-                if (rs.getString("password").equals(pass)) {
-                    passIsCorrect = true;
-                }
-                
-                if (passIsCorrect) {
-                    hideLayout();
-                    ManageAccount ma = new ManageAccount(fr, st, userName);
-                    ma.showLayout();
-                }
+            if (userName.length() > 0) {
+                try {
+                    ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    rs.next();
+                    boolean passIsCorrect = false;
+                    
+                    if (rs.getString("password").equals(pass)) {
+                        passIsCorrect = true;
+                    }
+                    
+                    if (passIsCorrect) {
+                        hideLayout();
+                        PageManageAccount ma = new PageManageAccount(fr, st, userName);
+                        ma.showLayout();
+                    } 
+                    else {
+                        showMessage();
+                    }
 
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }  
             }
-            catch (Exception e) {
-                System.out.println(e);
-            }  
             
             
         }
-    }
-
-    public static void main(String[] args){
-        JFrame fr = new JFrame("");
-        Statement st = null;
-        PageLogin lg = new PageLogin(fr, st);
-        lg.showLayout();
     }
 }
