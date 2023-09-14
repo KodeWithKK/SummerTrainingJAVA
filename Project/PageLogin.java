@@ -55,8 +55,8 @@ public class PageLogin implements ActionListener  {
         fr.setVisible(true);
     }
 
-    void showMessage() {
-        l5.setText("Incorrect username or password");
+    void showMessage(String mssg) {
+        l5.setText(mssg);
         l5.setForeground(Color.red);
         fr.add(l5);
 
@@ -100,11 +100,11 @@ public class PageLogin implements ActionListener  {
                             ma.showLayout();
                         } 
                         else {
-                            showMessage();
+                            showMessage("Entered Password is incorrect");
                         }
                     }
                     else {
-                        showMessage();
+                        showMessage("Entered Account doesn't Exist");
                     }
                     
                 }
