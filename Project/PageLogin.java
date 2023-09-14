@@ -57,7 +57,7 @@ public class PageLogin implements ActionListener  {
 
     void showMessage(String mssg) {
         l5.setText(mssg);
-        l5.setForeground(Color.red);
+        l5.setForeground(Color.RED);
         fr.add(l5);
 
         l5.setBounds(150, 280, 340, 40);

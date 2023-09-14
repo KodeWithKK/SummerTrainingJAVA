@@ -84,10 +84,10 @@ class PageDepositMoney implements ActionListener  {
                 int depositAmt = Integer.parseInt(t1.getText());
 
                 if (rs.getString("balance").length() > 20) {
-                    showMessage("Sorry, but our bank can't hold that much amount.", Color.red);
+                    showMessage("Sorry, but our bank can't hold that much amount.", Color.RED);
                 }
                 else {
-                    showMessage("₹" + depositAmt + " is Succesfully Deposited to your Account.", Color.green);
+                    showMessage("₹" + depositAmt + " is Succesfully Deposited to your Account.", Color.GREEN);
                     
                     rs = st.executeQuery("select * from bank where username = '" + userName + "'");
                     rs.next();

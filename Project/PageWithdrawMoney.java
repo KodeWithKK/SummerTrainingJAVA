@@ -82,10 +82,10 @@ class PageWithdrawMoney implements ActionListener {
                 int withdrawAmt = Integer.parseInt(t1.getText());
 
                 if (withdrawAmt > currBalance) {
-                    showMessage("Your Account doesn't have sufficent balance to be Withdrawn.", Color.red);
+                    showMessage("Your Account doesn't have sufficent balance to be Withdrawn.", Color.RED);
                 }
                 else {
-                    showMessage("₹" + withdrawAmt + " is Succesfully Withdrawn from your Account.", Color.green);
+                    showMessage("₹" + withdrawAmt + " is Succesfully Withdrawn from your Account.", Color.GREEN);
                     
                     rs = st.executeQuery("select * from bank where username = '" + userName + "'");
                     rs.next();

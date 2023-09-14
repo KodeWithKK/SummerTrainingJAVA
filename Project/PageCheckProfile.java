@@ -122,7 +122,7 @@ class PageCheckProfile implements ActionListener {
     void showMessage(String mssg, Color color) {
         l11.setText(mssg);
         l11.setForeground(color);
-        l11.setBounds(350,320,240,50);
+        l11.setBounds(345,320,240,50);
         b1.setBounds(150,380,240,50);
         b2.setBounds(480,380,240,50);
         fr.add(l11);
@@ -170,13 +170,13 @@ class PageCheckProfile implements ActionListener {
             String emailid = t8.getText();
 
             String successMssg = "Account Updated Successfully";
-            String errorMssg = "Given Input Length too High";
+            String errorMssg = "Given Input Length is too High";
 
             if (newName.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
-                showMessage(errorMssg, Color.red);
+                showMessage(errorMssg, Color.RED);
             }
             else {
-                showMessage(successMssg, Color.green);
+                showMessage(successMssg, Color.GREEN);
 
                 try {
                     ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");

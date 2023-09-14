@@ -165,18 +165,18 @@ class PageSignUp implements ActionListener {
             String errorMssg = "Given Input Length too High";
 
             if (name.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
-                showMessage(errorMssg, Color.red);
+                showMessage(errorMssg, Color.RED);
             }
             else {
                 
                 try {
                     ResultSet rs = st.executeQuery("select * from bank where username = '" + name + "'");
                     if (rs.next()) {
-                        showMessage("User Already Exists.", Color.red);
+                        showMessage("User Already Exists.", Color.RED);
                     }
                     else {
                         st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
-                        showMessage(successMssg, Color.green);
+                        showMessage(successMssg, Color.GREEN);
                     }
                 }
                 catch (Exception e) {
