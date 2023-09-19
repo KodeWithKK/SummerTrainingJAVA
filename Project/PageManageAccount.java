@@ -7,13 +7,13 @@ class PageManageAccount implements ActionListener {
     JFrame fr;
     JLabel l1, l2;
     JButton b1, b2, b3, b4, b5;
-    String userName;
+    String email;
     Statement st;
 
-    PageManageAccount (JFrame fr, Statement st, String userName) {
+    PageManageAccount (JFrame fr, Statement st, String email) {
         this.fr = fr;
         this.st = st;
-        this.userName = userName;
+        this.email = email;
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
         b1 = new JButton("Check Profile");
@@ -66,22 +66,22 @@ class PageManageAccount implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            PageCheckProfile cp = new PageCheckProfile(fr, st, userName);
+            PageCheckProfile cp = new PageCheckProfile(fr, st, email);
             cp.showLayout();
         }
         else if (ae.getSource() == b2) {
             hideLayout();
-            PageDepositMoney dm = new PageDepositMoney(fr, st, userName);
+            PageDepositMoney dm = new PageDepositMoney(fr, st, email);
             dm.showLayout();
         }
         else if (ae.getSource() == b3) {
             hideLayout();
-            PageWithdrawMoney wm = new PageWithdrawMoney(fr, st, userName);
+            PageWithdrawMoney wm = new PageWithdrawMoney(fr, st, email);
             wm.showLayout();
         }
         else if (ae.getSource() == b4) {
             hideLayout();
-            PageCheckBalance cb = new PageCheckBalance(fr, st, userName);
+            PageCheckBalance cb = new PageCheckBalance(fr, st, email);
             cb.showLayout();
         }
         else if (ae.getSource() == b5) {

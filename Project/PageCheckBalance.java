@@ -8,16 +8,16 @@ class PageCheckBalance implements ActionListener {
     JFrame fr;
     JButton b1;
     Statement st;
-    String userName;
+    String email;
 
-    PageCheckBalance(JFrame fr, Statement st, String userName) {
+    PageCheckBalance(JFrame fr, Statement st, String email) {
         this.fr = fr;
         this.st = st;
-        this.userName = userName;
+        this.email = email;
 
         String balance = "0";
         try {
-            ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+            ResultSet rs = st.executeQuery("select * from bank where email = '" + email + "'");
             rs.next();
             balance = rs.getString("balance");
         }
@@ -59,7 +59,7 @@ class PageCheckBalance implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            PageManageAccount ma = new PageManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, email);
             ma.showLayout();
         }
     }

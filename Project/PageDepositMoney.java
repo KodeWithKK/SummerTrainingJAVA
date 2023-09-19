@@ -9,12 +9,12 @@ class PageDepositMoney implements ActionListener  {
     JTextField t1;
     JButton b1, b2;
     Statement st;
-    String userName;
+    String email;
 
-    PageDepositMoney(JFrame fr, Statement st, String userName) {
+    PageDepositMoney(JFrame fr, Statement st, String email) {
         this.fr = fr;
         this.st = st;
-        this.userName = userName;
+        this.email = email;
 
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
@@ -78,7 +78,7 @@ class PageDepositMoney implements ActionListener  {
         if (ae.getSource() == b1) {
 
             try {
-                ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                ResultSet rs = st.executeQuery("select * from bank where email = '" + email + "'");
                 rs.next();
                 int currBalance = Integer.parseInt(rs.getString("balance"));
                 int depositAmt = Integer.parseInt(t1.getText());
@@ -88,12 +88,7 @@ class PageDepositMoney implements ActionListener  {
                 }
                 else {
                     showMessage("₹" + depositAmt + " is Succesfully Deposited to your Account.", Color.GREEN);
-                    
-                    rs = st.executeQuery("select * from bank where username = '" + userName + "'");
-                    rs.next();
-                    String userName = rs.getString("username");
-
-                    st.executeUpdate("update bank set balance = '" + (currBalance + depositAmt) + "' where username = '" + userName + "'");
+                    st.executeUpdate("update bank set balance = '" + (currBalance + depositAmt) + "' where email = '" + email + "'");
                     
                 }
             }
@@ -104,7 +99,7 @@ class PageDepositMoney implements ActionListener  {
         }
         else if (ae.getSource() == b2) {
             hideLayout();
-            PageManageAccount ma = new PageManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, email);
             ma.showLayout();
         }
     }

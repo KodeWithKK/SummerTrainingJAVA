@@ -10,15 +10,15 @@ class PageCheckProfile implements ActionListener {
     JComboBox cmb;
     JButton b1, b2;
     Statement st;
-    String userName;
+    String email;
 
-    PageCheckProfile(JFrame fr, Statement st, String userName){
+    PageCheckProfile(JFrame fr, Statement st, String email){
         this.fr = fr;
         this.st = st;
-        this.userName = userName;
+        this.email = email;
 
         try {
-            ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+            ResultSet rs = st.executeQuery("select * from bank where email = '" + email + "'");
             rs.next();
 
             t1=new JTextField(rs.getString("username"));
@@ -156,41 +156,41 @@ class PageCheckProfile implements ActionListener {
     public void actionPerformed (ActionEvent ae) {
         if (ae.getSource() == b1) {
             hideLayout();
-            PageManageAccount ma = new PageManageAccount(fr, st, userName);
+            PageManageAccount ma = new PageManageAccount(fr, st, email);
             ma.showLayout();
         }
         else if (ae.getSource() == b2) {
-            String newName = t1.getText().toLowerCase();
+            String name = t1.getText();
             String pass = t2.getText();
             String dob = t3.getText();
             String gender = t4.getText();
             String address = t5.getText();
             String religion = t6.getText();
             String phoneno = t7.getText();
-            String emailid = t8.getText();
+            String newMail = t8.getText().toLowerCase();
 
             String successMssg = "Account Updated Successfully";
             String errorMssg = "Given Input Length is too High";
 
-            if (newName.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
+            if (name.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || newMail.length() > 40) {
                 showMessage(errorMssg, Color.RED);
             }
             else {
                 showMessage(successMssg, Color.GREEN);
 
                 try {
-                    ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    ResultSet rs = st.executeQuery("select * from bank where email = '" + email + "'");
                     rs.next();
-                    st.executeUpdate("update bank set password = '"+pass+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set dob = '"+dob+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set gender = '"+gender+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set address = '"+address+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set religion = '"+religion+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set phoneno = '"+phoneno+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set email = '"+emailid+"' where username = '"+userName+"'");
-                    st.executeUpdate("update bank set username = '"+newName+"' where username = '"+userName+"'");
+                    st.executeUpdate("update bank set password = '"+pass+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set dob = '"+dob+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set gender = '"+gender+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set address = '"+address+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set religion = '"+religion+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set phoneno = '"+phoneno+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set email = '"+newMail+"' where email = '"+email+"'");
+                    st.executeUpdate("update bank set username = '"+name+"' where email = '"+email+"'");
 
-                    userName = newName;
+                    email = newMail;
                 }
                 catch (Exception e) {
                     System.out.println(e);

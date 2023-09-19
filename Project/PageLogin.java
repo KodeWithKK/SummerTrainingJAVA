@@ -6,7 +6,8 @@ import java.sql.*;
 public class PageLogin implements ActionListener  {
     JFrame fr;
     JLabel l1, l2, l3, l4, l5;
-    JTextField t1, t2;
+    JPasswordField t2;
+    JTextField t1;
     JButton b1, b2;
     Statement st;
 
@@ -15,11 +16,11 @@ public class PageLogin implements ActionListener  {
         this.st = st;
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
-        l3 = new JLabel("Username: ");
+        l3 = new JLabel("Email: ");
         l4 = new JLabel("Password: ");
         l5 = new JLabel("");
         t1 = new JTextField("");
-        t2 = new JTextField("");
+        t2 = new JPasswordField("");
         b1 = new JButton("New User?");
         b2 = new JButton("Login");
     }
@@ -87,16 +88,17 @@ public class PageLogin implements ActionListener  {
         }
         else if (ae.getSource() == b2) {
 
-            String userName = t1.getText().toLowerCase();
+            String email = t1.getText().toLowerCase();
             String pass = t2.getText();
 
-            if (userName.length() > 0) {
+            if (email.length() > 0) {
                 try {
-                    ResultSet rs = st.executeQuery("select * from bank where username = '" + userName + "'");
+                    ResultSet rs = st.executeQuery("select * from bank where email = '" + email + "'");
                     if (rs.next()) {
                         if (rs.getString("password").equals(pass)) {
                             hideLayout();
-                            PageManageAccount ma = new PageManageAccount(fr, st, userName);
+                            email = rs.getString("email");
+                            PageManageAccount ma = new PageManageAccount(fr, st, email);
                             ma.showLayout();
                         } 
                         else {

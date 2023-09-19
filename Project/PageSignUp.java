@@ -152,30 +152,31 @@ class PageSignUp implements ActionListener {
             ln.showLayout();
         }
         else if (ae.getSource() == b2) {
-            String name = t1.getText().toLowerCase();
+            String name = t1.getText();
             String pass = t2.getText();
             String dob = t3.getText();
             String gender = t4.getText();
             String address = t5.getText();
             String religion = t6.getText();
             String phoneno = t7.getText();
-            String emailid = t8.getText();
+            String email = t8.getText().toLowerCase();
 
             String successMssg = "Account Created Successfully";
             String errorMssg = "Given Input Length too High";
 
-            if (name.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || emailid.length() > 40) {
+            if (name.length() > 30 || pass.length() > 4 || dob.length() > 15 || gender.length() > 10 || address.length() > 50 || religion.length() > 20 || phoneno.length() > 10 || email.length() > 40) {
                 showMessage(errorMssg, Color.RED);
             }
             else {
                 
                 try {
-                    ResultSet rs = st.executeQuery("select * from bank where username = '" + name + "'");
-                    if (rs.next()) {
+                    ResultSet rs1 = st.executeQuery("select * from bank where email = '" + email + "'");
+                    ResultSet rs2 = st.executeQuery("select * from bank where phoneno = '" + phoneno + "'");
+                    if (rs1.next() || rs2.next()) {
                         showMessage("User Already Exists.", Color.RED);
                     }
                     else {
-                        st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +emailid+ "')");
+                        st.executeUpdate("insert into bank values('" +name+ "','" +pass+ "','0','" +dob+ "','" +gender+ "','" +address+ "','" +religion+ "','" +phoneno+ "','" +email+ "')");
                         showMessage(successMssg, Color.GREEN);
                     }
                 }
