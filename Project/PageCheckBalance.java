@@ -27,7 +27,7 @@ class PageCheckBalance implements ActionListener {
 
         l1 = new JLabel("ABC Bank");
         l2 = new JLabel("Prayagraj");
-        l3 = new JLabel("Your Balance is ₹" + balance);
+        l3 = new JLabel("Your Balance is " + balance + " Rs.");
         b1 = new JButton("Go Back");
     }
 

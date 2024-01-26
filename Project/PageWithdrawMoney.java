@@ -85,7 +85,7 @@ class PageWithdrawMoney implements ActionListener {
                     showMessage("Your Account doesn't have sufficent balance to be Withdrawn.", Color.RED);
                 }
                 else {
-                    showMessage("₹" + withdrawAmt + " is Succesfully Withdrawn from your Account.", Color.GREEN);
+                    showMessage(withdrawAmt + " Rs. is Succesfully Withdrawn from your Account.", Color.GREEN);
                     st.executeUpdate("update bank set balance = '" + (currBalance - withdrawAmt) + "' where email = '" + email + "'");
                     
                 }

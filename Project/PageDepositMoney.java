@@ -87,7 +87,7 @@ class PageDepositMoney implements ActionListener  {
                     showMessage("Sorry, but our bank can't hold that much amount.", Color.RED);
                 }
                 else {
-                    showMessage("₹" + depositAmt + " is Succesfully Deposited to your Account.", Color.GREEN);
+                    showMessage(depositAmt + " Rs. is Succesfully Deposited to your Account.", Color.GREEN);
                     st.executeUpdate("update bank set balance = '" + (currBalance + depositAmt) + "' where email = '" + email + "'");
                     
                 }
